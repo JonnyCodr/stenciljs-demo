@@ -1,4 +1,4 @@
-import {Component, h, State} from '@stencil/core';
+import {Component, h, Prop, State} from '@stencil/core';
 
 @Component({
   tag: 'mm-stick-price',
@@ -12,29 +12,42 @@ export class StockPrice {
   @State() stockUserInput;
   @State() errorMsg;
 
+  @Prop() stockSymbol:string;
+
 onFetchStockPrice(event: Event) {
   event.preventDefault();
   // const valuestockSynbol = (this.el.shadowRoot.querySelector('#stock-symbol') as HTMLInputElement).value;
   const valuestockSynbol = this.stockInput.value;
-  fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${valuestockSynbol}&apikey=2VO8JK6F0U69S6OJ`)
-    .then(res => {
-      return res.json();
-    })
-    .then(parsedRes => {
-      console.log(JSON.stringify(parsedRes))
-      if (!parsedRes['Global Quote']['05. price']) {
-        throw new Error('invalid symbol')
-      }
-      this.fetchedPrice = +parsedRes['Global Quote']['05. price']
-    })
-    .catch(err => {
-      this.errorMsg = err.message
-    });
+  this.fetchStockPrice(valuestockSynbol);
 }
 
-onUserInput(event: Event) {
+  private fetchStockPrice(valuestockSynbol: string) {
+    fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${valuestockSynbol}&apikey=2VO8JK6F0U69S6OJ`)
+      .then(res => {
+        return res.json();
+      })
+      .then(parsedRes => {
+        console.log(JSON.stringify(parsedRes))
+        if (!parsedRes['Global Quote']['05. price']) {
+          throw new Error('invalid symbol')
+        }
+        this.fetchedPrice = +parsedRes['Global Quote']['05. price']
+      })
+      .catch(err => {
+        this.errorMsg = err.message
+      });
+  }
+
+  onUserInput(event: Event) {
   this.stockUserInput = (event.target as HTMLInputElement).value;
 
+}
+
+componentDidLoad() {
+  console.log(this.stockSymbol)
+  if (this.stockSymbol) {
+    this.fetchStockPrice(this.stockSymbol);
+  }
 }
 
   render () {
