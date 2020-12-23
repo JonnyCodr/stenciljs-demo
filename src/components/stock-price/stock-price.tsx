@@ -1,4 +1,4 @@
-import {Component, h, Prop, State} from '@stencil/core';
+import {Component, h, Prop, State, Watch} from '@stencil/core';
 
 @Component({
   tag: 'mm-stick-price',
@@ -11,15 +11,23 @@ export class StockPrice {
   @State() fetchedPrice;
   @State() stockUserInput;
   @State() errorMsg;
-  initialStockSymbol: string;
+  // initialStockSymbol: string;
 
-  @Prop() stockSymbol: string;
+  @Prop({mutable: true, reflect: true}) stockSymbol: string;
+
+  @Watch('stockSymbol')
+  stockSymbolChanged(newVal: string, oldVal: string) {
+    if (newVal !== oldVal) {
+      this.stockUserInput = newVal;
+      this.fetchStockPrice(newVal);
+    }
+  }
 
   onFetchStockPrice(event: Event) {
     event.preventDefault();
     // const valuestockSynbol = (this.el.shadowRoot.querySelector('#stock-symbol') as HTMLInputElement).value;
-    const valuestockSynbol = this.stockInput.value;
-    this.fetchStockPrice(valuestockSynbol);
+    this.stockSymbol = this.stockInput.value;
+    // this.fetchStockPrice(valuestockSynbol);
   }
 
   onUserInput(event: Event) {
@@ -34,7 +42,7 @@ export class StockPrice {
   componentDidLoad() {
     console.log(this.stockSymbol)
     if (this.stockSymbol) {
-      this.initialStockSymbol = this.stockSymbol;
+      // this.initialStockSymbol = this.stockSymbol;
       this.stockUserInput = this.stockSymbol;
       this.fetchStockPrice(this.stockSymbol);
     }
@@ -47,10 +55,10 @@ export class StockPrice {
 
   componentDidUpdate() {
     console.log('component did update fired')
-    if (this.stockSymbol !== this.initialStockSymbol) {
-      this.initialStockSymbol = this.stockSymbol
-      this.fetchStockPrice(this.stockSymbol);
-    }
+    // if (this.stockSymbol !== this.initialStockSymbol) {
+    //   this.initialStockSymbol = this.stockSymbol
+    //   this.fetchStockPrice(this.stockSymbol);
+    // }
   }
 
   render() {
