@@ -9,6 +9,8 @@ export namespace Components {
     interface MmStickPrice {
         "stockSymbol": string;
     }
+    interface MmStockFinder {
+    }
     interface MyComponent {
         /**
           * The first name
@@ -31,6 +33,12 @@ declare global {
         prototype: HTMLMmStickPriceElement;
         new (): HTMLMmStickPriceElement;
     };
+    interface HTMLMmStockFinderElement extends Components.MmStockFinder, HTMLStencilElement {
+    }
+    var HTMLMmStockFinderElement: {
+        prototype: HTMLMmStockFinderElement;
+        new (): HTMLMmStockFinderElement;
+    };
     interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
     }
     var HTMLMyComponentElement: {
@@ -39,12 +47,15 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "mm-stick-price": HTMLMmStickPriceElement;
+        "mm-stock-finder": HTMLMmStockFinderElement;
         "my-component": HTMLMyComponentElement;
     }
 }
 declare namespace LocalJSX {
     interface MmStickPrice {
         "stockSymbol"?: string;
+    }
+    interface MmStockFinder {
     }
     interface MyComponent {
         /**
@@ -62,6 +73,7 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "mm-stick-price": MmStickPrice;
+        "mm-stock-finder": MmStockFinder;
         "my-component": MyComponent;
     }
 }
@@ -70,6 +82,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "mm-stick-price": LocalJSX.MmStickPrice & JSXBase.HTMLAttributes<HTMLMmStickPriceElement>;
+            "mm-stock-finder": LocalJSX.MmStockFinder & JSXBase.HTMLAttributes<HTMLMmStockFinderElement>;
             "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
         }
     }
