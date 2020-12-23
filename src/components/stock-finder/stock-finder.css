@@ -35,3 +35,15 @@ form button:active {
   background: #7a047a;
   border-color: #7a047a;
 }
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+li {
+  margin: 0.25rem 0;
+  padding: 0.25rem;
+  border: 1px solid #ccc;
+}

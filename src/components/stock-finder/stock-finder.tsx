@@ -1,5 +1,4 @@
-import {Component, h} from "@stencil/core";
-import {logBuild} from "@stencil/core/dev-server/client";
+import {Component, h, State} from "@stencil/core";
 
 @Component({
   tag: 'mm-stock-finder',
@@ -7,8 +6,9 @@ import {logBuild} from "@stencil/core/dev-server/client";
   shadow: true
 })
 export class StockFinder {
-
   stockNameInput: HTMLInputElement;
+
+  @State() searchResults: {symbol: string, name: string}[] = [];
 
   onFindStocks(event: Event) {
     event.preventDefault();
@@ -16,18 +16,22 @@ export class StockFinder {
     fetch(`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${searchTerm}&apikey=2VO8JK6F0U69S6OJ`)
       .then(res => res.json())
       .then(parsedRes => {
-        console.log(parsedRes)
+        this.searchResults = parsedRes['bestMatches'].map( match => {
+          return {name: match['2. name'], symbol: match['1. symbol']}
+        })
       })
-      .catch( err => logBuild(err))
+      .catch( err => console.log(err))
   }
 
   render() {
     return [
       <form onSubmit={this.onFindStocks.bind(this)}>
-        <input type="text" id="stock-symbol" ref={el => this.stockNameInput = el} />
+        <input id="stock-symbol" ref={el => this.stockNameInput = el} />
         <button type="submit">Find</button>
       </form>,
-      <div>foo</div>
+      <ul>{
+        this.searchResults.map(result => <li>{result.name}</li> )}
+      </ul>
     ]
   }
 }
