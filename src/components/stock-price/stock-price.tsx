@@ -1,4 +1,4 @@
-import {Component, h, State, Element} from '@stencil/core';
+import {Component, h, State} from '@stencil/core';
 
 @Component({
   tag: 'mm-stick-price',
@@ -7,7 +7,7 @@ import {Component, h, State, Element} from '@stencil/core';
 })
 export class StockPrice {
   stockInput: HTMLInputElement;
-  @Element() el: HTMLElement;
+  // @Element() el: HTMLElement;
   @State() fetchedPrice;
 
 onFetchStockPrice(event: Event) {
@@ -17,7 +17,8 @@ onFetchStockPrice(event: Event) {
   fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTES&symbol=MSFT&apikey=demo`)
     .then(res => {
       return res.json();
-    }).then(parsedRes => this.fetchedPrice = +parsedRes['Global Quote']['05 price'])
+    })
+    .then(parsedRes => this.fetchedPrice = +parsedRes['Global Quote']['05 price'])
     .catch(err => console.log(err));
 }
 
@@ -31,6 +32,128 @@ onFetchStockPrice(event: Event) {
           <p>Price: ${this.fetchedPrice}</p>
       </div>
     ];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   }
 }
-
