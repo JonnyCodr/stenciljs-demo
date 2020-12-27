@@ -1,4 +1,4 @@
-import {Component, h, Prop, State, Watch} from '@stencil/core';
+import {Component, h, Listen, Prop, State, Watch} from '@stencil/core';
 
 @Component({
   tag: 'mm-stick-price',
@@ -19,6 +19,7 @@ export class StockPrice {
   stockSymbolChanged(newVal: string, oldVal: string) {
     if (newVal !== oldVal) {
       this.stockUserInput = newVal;
+      this.stockUserInput = true;
       this.fetchStockPrice(newVal);
     }
   }
@@ -75,9 +76,14 @@ export class StockPrice {
         {data}
       </div>
     ];
-
-
   }
+
+  @Listen('mmSymbolSelected', { target: 'body' })
+  onStockSymbolSelected(event: CustomEvent) {
+    if (event.detail && event.detail !== this.stockSymbol) {
+      this.stockSymbol = event.detail;
+    }
+}
 
   private fetchStockPrice(valuestockSynbol: string) {
     fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${valuestockSynbol}&apikey=2VO8JK6F0U69S6OJ`)
