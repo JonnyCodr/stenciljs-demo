@@ -1,4 +1,4 @@
-import {Component, h, State} from "@stencil/core";
+import {Component, h, State, Event, EventEmitter} from "@stencil/core";
 
 @Component({
   tag: 'mm-stock-finder',
@@ -9,6 +9,7 @@ export class StockFinder {
   stockNameInput: HTMLInputElement;
 
   @State() searchResults: {symbol: string, name: string}[] = [];
+  @Event({bubbles: true, composed: true}) mmSymbolSelected: EventEmitter<string>;
 
   onFindStocks(event: Event) {
     event.preventDefault();
@@ -23,6 +24,10 @@ export class StockFinder {
       .catch( err => console.log(err))
   }
 
+  onSelectSymbol(symbol: string) {
+    this.mmSymbolSelected.emit(symbol);
+  }
+
   render() {
     return [
       <form onSubmit={this.onFindStocks.bind(this)}>
@@ -30,7 +35,9 @@ export class StockFinder {
         <button type="submit">Find</button>
       </form>,
       <ul>{
-        this.searchResults.map(result => <li>{result.name}</li> )}
+        this.searchResults.map(result => (
+          <li onClick={this.onSelectSymbol.bind(this, result.symbol)}><strong>{result.symbol}</strong> - {result.name}</li>
+        ))}
       </ul>
     ]
   }

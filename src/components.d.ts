@@ -56,6 +56,7 @@ declare namespace LocalJSX {
         "stockSymbol"?: string;
     }
     interface MmStockFinder {
+        "onMmSymbolSelected"?: (event: CustomEvent<string>) => void;
     }
     interface MyComponent {
         /**

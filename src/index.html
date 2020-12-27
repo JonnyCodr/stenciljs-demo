@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
-    <title>Stencil Component Starter</title>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"/>
+  <title>Stencil Component Starter</title>
 
-    <script type="module" src="/build/stock-price.esm.js"></script>
-    <script nomodule src="/build/stock-price.js"></script>
-  </head>
-  <body>
-    <mm-stick-price stock-symbol="AAPL"></mm-stick-price>
-    <mm-stock-finder></mm-stock-finder>
-  </body>
+  <script type="module" src="/build/stock-price.esm.js"></script>
+  <script nomodule src="/build/stock-price.js"></script>
+</head>
+<body>
+<mm-stick-price stock-symbol="AAPL"></mm-stick-price>
+<mm-stock-finder></mm-stock-finder>
+<script>
+  const stockFinderEl = document.querySelector('mm-stock-finder');
+  stockFinderEl.addEventListener('mmSymbolSelected', event => {
+    console.log(event)
+  });
+</script>
+</body>
 </html>
