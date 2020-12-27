@@ -85,6 +85,12 @@ export class StockPrice {
     }
 }
 
+hostData() {
+    return {
+      class: this.errorMsg ? 'error' : ''
+    };
+}
+
   private fetchStockPrice(valuestockSynbol: string) {
     fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${valuestockSynbol}&apikey=2VO8JK6F0U69S6OJ`)
       .then(res => {
@@ -98,7 +104,8 @@ export class StockPrice {
         this.fetchedPrice = +parsedRes['Global Quote']['05. price']
       })
       .catch(err => {
-        this.errorMsg = err.message
+        this.errorMsg = err.message;
+        this.fetchedPrice = null;
       });
   }
 }
